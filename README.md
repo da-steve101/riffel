@@ -1,9 +1,9 @@
 
 #Riffel
 
-This project will be a bridge through [Riffa](http://riffa.ucsd.edu) project interface to [Chisel](http://chisel.eecs.berkeley.edu/) world.
+The goal of this project is to build a bridge between [Riffa](http://riffa.ucsd.edu) and [Chisel](http://chisel.eecs.berkeley.edu/).
 
-It aims to simplify a bit more the PCIe communication of Chisel modules to the host. 
+It aims to simplify the PCIe communication between Chisel modules and the host. 
 
 To build tests:
 
@@ -24,7 +24,8 @@ txBufferSize = 10
 
 ##How to use this
 
-A sample Riffel usage that echo the data from in to out adding one will looks as follows:
+Below there is a simple example that echoes the data in input adding one to each value.
+
 ```scala
 case class RiffelEchoExample(C_PCI_DATA_WIDTH: Int) extends Module {
 	val io = new Bundle {
