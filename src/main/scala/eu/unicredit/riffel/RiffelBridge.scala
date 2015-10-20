@@ -18,9 +18,6 @@ import Chisel._
 
 case class RiffelBridge(C_PCI_DATA_WIDTH: Int, tx_buffer_size: Int) extends Module {
 	val io = new Bundle {
-		val CLK = Bool(INPUT)
-    	val RST = Bool(INPUT)
-    
     	val RX_CLK = Bool(OUTPUT) 
     	val RX = Bool(INPUT)
     	val RX_ACK = Bool(OUTPUT)
@@ -50,15 +47,36 @@ case class RiffelBridge(C_PCI_DATA_WIDTH: Int, tx_buffer_size: Int) extends Modu
 		val bridge_tx_data_en = Bool(INPUT)	
 	}
 
+        setModuleName("RIFFA2_BRIDGE")
+
+        RX_CLK.setName("CHNL_RX_CLK")
+        RX.setName("CHNL_RX")
+        RX_ACK.setName("CHNL_RX_ACK")
+        RX_LAST.setName("CHNL_RX_LAST")
+        RX_LEN.setName("CHNL_RX_LEN")
+        RX_OFF.setName("CHNL_RX_OFF")
+        RX_DATA.setName("CHNL_RX_DATA")
+        RX_DATA_VALID.setName("CHNL_RX_DATA_VALID")
+        RX_DATA_REN.setName("CHNL_RX_DATA_REN")
+
+        TX_CLK.setName("CHNL_TX_CLK")
+        TX_ACK.setName("CHNL_TX_ACK")
+        TX_LAST.setName("CHNL_TX_LAST")
+        TX_LEN.setName("CHNL_TX_LEN")
+        TX_OFF.setName("CHNL_TX_OFF")
+        TX_DATA.setName("CHNL_TX_DATA")
+        TX_DATA_VALID.setName("CHNL_TX_DATA_VALID")
+        TX_DATA_REN.setName("CHNL_TX_DATA_REN")
+
 	val rx_comm = Module(RiffelRXComm(C_PCI_DATA_WIDTH))
 
 	val tx_comm = Module(RiffelTXComm(C_PCI_DATA_WIDTH, tx_buffer_size))
 
-	io.CLK 				<> rx_comm.io.CLK
-	io.RST 				<> rx_comm.io.RST
+	rx_comm.io.CLK := clock
+	rx_comm.io.RST := reset
 
-	io.CLK 				<> tx_comm.io.CLK
-	io.RST 				<> tx_comm.io.RST
+	tx_comm.io.CLK := clock
+	tx_comm.io.RST := reset
 
 	io.RX_CLK 			<> rx_comm.io.RX_CLK
 	io.RX 				<> rx_comm.io.RX
